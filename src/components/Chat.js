@@ -1,9 +1,92 @@
+import React from "react";
+
 function Chat() {
+  const [chats,setChats] = React.useState([
+    {user:"nass",text:"Hello, I am Nass"},
+  ])
+  const [search, setSearch] = React.useState("");
+
+  const randomHello = () => {
+    var hello = ["Hello, how can I help you?","Greetings for the day.","Hey there, how may I help you today?"];
+    return hello[Math.floor(Math.random()*3)];
+  }
+
+  const randomBye = () => {
+    var bye = ["Thanks for using our service.","Until next time.","See you again, thanks bye"];
+    return bye[Math.floor(Math.random()*3)];
+  }
+
+  const getAnswerGoogle = (search) =>{
+    fetch("http://localhost:8001/google",{
+      method:"POST",
+      body:JSON.stringify({search})
+    }).then(res=>res.json()).then(response=>{
+      setChats([...chats,
+        {user:"user",text:search},
+        {user:"nass",text:response.data + " - Response from google"}
+      ]);
+    })
+  }
+
+  const getAnswerWiki = (search) =>{
+    fetch("http://localhost:8001/wiki",{
+      method:"POST",
+      body:JSON.stringify({search})
+    }).then(res=>res.json()).then(response=>{
+      setChats([...chats,
+        {user:"user",text:search},
+        {user:"nass",text:response.data + " - Response from Wikipedia"}
+      ]);
+    })
+  }
+
+  const getAnswerIBM = (search) =>{
+    console.log('front : ',search);
+    fetch(`https://nass-server.herokuapp.com/IBM?search=${search}`).then(res=>res.json()).then(response=>{
+      console.log(response);
+      setChats([...chats,
+        {user:"user",text:search},
+        {user:"nass",text:response.data + " - Response from IBM Watson Discovery"}
+      ]);
+    })
+  }
+
+  const splitAndSearch = () => {
+    console.log(search);
+    var texts = search.split(" ");
+    var answered = false;
+    for (var i=0;i<texts.length;i++) {
+      var text = texts[i].toLowerCase();
+      if (
+        text === "hi" ||
+        text === "hello" ||
+        text === "greetings" ||
+        text === "hey"
+      ) {
+        setChats([...chats,{user:"user",text:search},{user:"nass",text:randomHello()}]);
+        answered = true;
+        break;
+      }else if (
+        text === "bye" ||
+        text === "goodbye"
+      ) {
+        setChats([...chats,{user:"user",text:search},{user:"nass",text:randomBye()}]);
+        answered = true;
+        break;
+      }
+    }
+    if(!answered){
+      console.log("API : ",search);
+      getAnswerIBM(search);
+    }
+    setSearch("");
+    window.location.href="#bottom";
+  };
   return (
     <div>
       <div className="row">
         <div
-          className="col-md-7"
+          className="col-md-6"
           style={{
             backgroundColor: "#005073",
             color: "#ffffff",
@@ -31,25 +114,35 @@ function Chat() {
             </a>
           </div>
         </div>
-        <div className="col-md-5">
-          <div>
-            <div className="py-4 ps-3">
-              <span className="pe-md-1 ps-md-2">                
-              <img src="./assets/bot.png" className="" alt="" style={{height:45, width:45}}/>  
-                </span>
-              <span className="p-2 ms-2 ms-md-2 rounded" style={{color:"white",backgroundColor:"#005073"}}>Hello, I am Nass</span> 
-            </div>
+        <div className="col-md-6">
+          <div className="p-2" style={{backgroundColor:'#005073'}}>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0a2nCTQc2VBbF-fuB7WrfO5Ten4VIP7cdRG1lUeDX&s" width="30" className="img-fluid rounded"/>
+            {" "}<span className="h5 text-light">Nass</span>
           </div>
-          <div className=" overflow-auto" style={styles.chat}>
+          <div className=" overflow-auto my-3" style={styles.chat}>
+            {chats.map((item,index)=>(
+              <ChatBox item={item} index={index}/>
+            ))}
             {/* <div className="py-5"></div> */}
           </div>
+          <span id="bottom"></span>
           <div className="row">
             <div className="col-md-10 ps-md-2 pe-md-2 col-9 ps-3">
-              <input type="text" className="form-control" />
+              <input
+                type="text"
+                className="form-control p-2"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
             </div>
             <div className="col-md-2 col-3">
-              <i className="fa fa-microphone px-md-3 px-3" style={{fontSize:25}}></i> 
-              <i className="fa fa-send-o " style={{fontSize:25}}></i>
+              <i
+                className="fa fa-microphone px-md-3 px-3"
+                style={{ fontSize: 25 }}
+              ></i>
+              <button className="btn" onClick={()=>splitAndSearch()}><i className="fa fa-play" style={{ fontSize: 25 }}></i></button>
             </div>
           </div>
         </div>
@@ -58,9 +151,43 @@ function Chat() {
   );
 }
 
+
+function ChatBox({item,index}){
+  const [open,setOpen] = React.useState(false);
+  return(
+    <>
+              {item.user==="nass"?(<div key={index}
+              className="p-2 m-2 col-6 rounded"
+              style={{ color: "black", backgroundColor: "#ddd" }}>
+                <div >
+              {item.text.length>250?(<>{!open?(<>{item.text.slice(0,250)} ...</> ):(<>{item.text}</>)}</>):(<>{item.text}</>)}
+
+              {item.text.length>250?(
+              <div className="row justify-content-between">
+                <div className="col-1"></div>
+                <div className="col-3">
+                  <button className="btn text-dark" style={{fontSize:10}} onClick={()=>setOpen(!open)}>{open?"Close":"See more"}</button>
+                </div>
+                </div>):(<></>)}
+            </div></div>):(<div className="row justify-content-around m-2" key={index}>
+              <span className="col-5"></span>
+              <span
+              className="p-2 ms-2 ms-md-2 col-6 rounded"
+              style={{ color: "white", backgroundColor: "#005073"  }}
+            >
+              {item.text}
+            </span>
+            </div>)}
+            </>
+  )
+}
+
 const styles = {
   chat: {
-    height: "68vh",
+    height: "65vh",
+    fontSize: 13,
   },
 };
+
+
 export default Chat;
