@@ -3,8 +3,8 @@ import Header from "../components/home/Header";
 function Solutions() {
   return (
     <div>
-        <Notify/>
-        <Header/>
+      <Notify />
+      <Header />
       <div>
         <div
           className=""
@@ -14,22 +14,31 @@ function Solutions() {
             fontFamily: "Times New Roman",
           }}
         >
-          <div className="p-5 m-2">
+          <div className="p-4 m-2">
+            <div className="row">
+              <div className="col-md-9"></div>
+              <div className="col-md-3">
+                <input
+                  type="text"
+                  className="rounded-pill ps-3 py-2 pe-5"
+                  placeholder="Type here to Search"
+                  
+                />
+              </div>
+            </div>
             <h1 className="py-4">Text</h1>
 
             <h2 className="py-4 col-11">Dear User!</h2>
             <h4 className="py-2 col-12">
-            Kindly write down your query in the search bar provided. Your query is fed as an input at the backend and passed 
-as a parameter into a dedicated method that allows the query to be forwarded as the direct query to the browser.
-The results and resources returned by the browse search are then redirected to the front end of the web application
-and hence, displayed for you to explore and troubleshoot the issue.
+              Kindly write down your query in the search bar provided. Your
+              query is fed as an input at the backend and passed as a parameter
+              into a dedicated method that allows the query to be forwarded as
+              the direct query to the browser. The results and resources
+              returned by the browse search are then redirected to the front end
+              of the web application and hence, displayed for you to explore and
+              troubleshoot the issue.
             </h4>
-            {/* <h4 className="py-4 col-12">
-              You can input your issue, error, or your query via text or speech.
-              Our system is wonderfully equipped to report back to you the
-              potential causes of the error and mitigation measures you can take
-              to troubleshoot it - in text and speech both.
-            </h4> */}
+
             <h3 className="py-3">
               We hope <u> net-works</u> for you.
             </h3>
@@ -42,7 +51,7 @@ We hope net-works for you.
           </div>
         </div>
       </div>
-      <hr className="" style={{border:"5px solid #eee"}}/>
+      <hr className="" style={{ border: "5px solid #eee" }} />
       <div>
         <div
           className=""
@@ -52,17 +61,32 @@ We hope net-works for you.
             fontFamily: "Times New Roman",
           }}
         >
-          <div className="p-5 m-2">
+          <div className="p-4 m-2">
+          <div className="row">
+              <div className="col-md-9"></div>
+              <div className="col-md-3">
+                <input
+                  type="text"
+                  className="rounded-pill ps-3 py-2 pe-5"
+                  placeholder="Type here to Search"                  
+                />
+              </div>
+            </div>
             <h1 className="py-4">Speech-to-Text:</h1>
 
             <h2 className="py-4 col-11">Dear User!</h2>
             <h4 className="py-2 col-12">
-            Kindly tap on the microphone symbol and speak your issue or concern clearly. A dedicated method would convert 
-your speech input into text (query), which is fed as an input at the backend, and passed 
-as a parameter into a dedicated method that allows the query to be forwarded as the direct query to the browser.
-The results and resources returned by the browse search are then redirected to the front end of the web application
-and hence, displayed for you to explore and troubleshoot the issue. Here, the output is also returned in speech 
-format. Hence, besides seeing the outputs visibly, our system would also be able to talk back to you.
+              Kindly tap on the microphone symbol and speak your issue or
+              concern clearly. A dedicated method would convert your speech
+              input into text (query), which is fed as an input at the backend,
+              and passed as a parameter into a dedicated method that allows the
+              query to be forwarded as the direct query to the browser. The
+              results and resources returned by the browse search are then
+              redirected to the front end of the web application and hence,
+              displayed for you to explore and troubleshoot the issue. Here, the
+              output is also returned in speech format. Hence, besides seeing
+              the outputs visibly, our system would also be able to talk back to
+              you.
             </h4>
             {/* <h4 className="py-4 col-12">
               You can input your issue, error, or your query via text or speech.
