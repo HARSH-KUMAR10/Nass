@@ -22,7 +22,7 @@ function About() {
             networking issues but also provides you with the most intelligent
             solution and efficient resources for accurate troubleshooting.
           </h4>
-          <h4 className="py-4 col-12">
+          <h4 className="py-4">
             You can input your issue, error, or your query via text or speech.
             Our system is wonderfully equipped to report back to you the
             potential causes of the error and mitigation measures you can take
@@ -37,7 +37,9 @@ function About() {
             >
 We hope net-works for you.
             </a> */}
+            
         </div>
+
       </div>
     </div>
   );

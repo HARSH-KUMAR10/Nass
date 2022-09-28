@@ -42,7 +42,7 @@ We hope net-works for you.
           </div>
         </div>
       </div>
-      <hr className="" style={{border:"5px solid red"}}/>
+      <hr className="" style={{border:"5px solid #eee"}}/>
       <div>
         <div
           className=""
