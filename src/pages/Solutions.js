@@ -16,15 +16,16 @@ function Solutions() {
         >
           <div className="p-4 m-2">
             <div className="row">
-              <div className="col-md-9"></div>
-              <div className="col-md-3">
+              <div className="col-md-8"></div>
+              <div className="col-md-3 row">
                 <input
                   type="text"
-                  className="rounded-pill ps-3 py-2 pe-5"
+                  className="rounded-pill px-3 py-2"
                   placeholder="Type here to Search"
-                  
                 />
               </div>
+              <div className="col-md-1"><button className="btn" style={{color:"white"}}><i className=" fa fa-play px-3 pt-1" style={{ fontSize: 30 }}></i></button></div>
+
             </div>
             <h1 className="py-4">Text</h1>
 
@@ -63,14 +64,15 @@ We hope net-works for you.
         >
           <div className="p-4 m-2">
           <div className="row">
-              <div className="col-md-9"></div>
-              <div className="col-md-3">
+              <div className="col-md-8"></div>
+              <div className="col-md-3 row">
                 <input
                   type="text"
-                  className="rounded-pill ps-3 py-2 pe-5"
-                  placeholder="Type here to Search"                  
+                  className="rounded-pill px-3 py-2"
+                  placeholder="Speak here to Search"
                 />
               </div>
+              <div className="col-md-1"><button className="btn" style={{color:"white"}}><i className=" fa fa-microphone px-3 pt-1" style={{ fontSize: 30 }}></i></button></div>
             </div>
             <h1 className="py-4">Speech-to-Text:</h1>
 
