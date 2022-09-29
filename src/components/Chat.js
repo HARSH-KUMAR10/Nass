@@ -1,6 +1,7 @@
 import React from "react";
 
 function Chat() {
+  const [loading,setLoading] = React.useState(false);
   const [chats,setChats] = React.useState([
     {user:"nass",text:"Hello, I am Nass"},
   ])
@@ -8,12 +9,12 @@ function Chat() {
 
   const randomHello = () => {
     var hello = ["Hello, how can I help you?","Greetings for the day.","Hey there, how may I help you today?"];
-    return hello[Math.floor(Math.random()*3)];
+    return hello[Math.floor(Math.random()*hello.length)];
   }
 
   const randomBye = () => {
     var bye = ["Thanks for using our service.","Until next time.","See you again, thanks bye"];
-    return bye[Math.floor(Math.random()*3)];
+    return bye[Math.floor(Math.random()*bye.length)];
   }
 
   const getAnswerGoogle = (search) =>{
@@ -42,16 +43,25 @@ function Chat() {
 
   const getAnswerIBM = (search) =>{
     console.log('front : ',search);
-    fetch(`https://nass-server.herokuapp.com/IBM?search=${search}`).then(res=>res.json()).then(response=>{
+    fetch(`https://nass-server.herokuapp.com/IBM?search=${search}`).then(res=>res.json()).then(async (response)=>{
       console.log(response);
-      setChats([...chats,
-        {user:"user",text:search},
-        {user:"nass",text:response.data + " - Response from IBM Watson Discovery"}
-      ]);
+      var temp = await chats.filter((item)=>item.text!=="loading...");
+      console.log(temp);
+      if(response.statusCode===200){
+        setChats([...temp,
+          {user:"user",text:search},
+          {user:"nass",text:response.data + " - Response from IBM Watson Discovery"}
+        ]);
+      }else{
+        setChats([...temp,
+          {user:"user",text:search},
+          {user:"nass",text:"Unable to follow up on your request."}
+        ]);
+      }
     })
   }
 
-  const splitAndSearch = () => {
+  const splitAndSearch = async () => {
     console.log(search);
     var texts = search.split(" ");
     var answered = false;
@@ -77,8 +87,10 @@ function Chat() {
     }
     if(!answered){
       console.log("API : ",search);
-      getAnswerIBM(search);
+      await setChats([...chats,{user:"nass",text:"loading ..."}]);
+      await getAnswerIBM(search);
     }
+
     setSearch("");
     window.location.href="#bottom";
   };
@@ -122,7 +134,7 @@ We hope net-works for you.
         <div className="col-md-6">
           <div className="p-2" style={{backgroundColor:'#005073'}}>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0a2nCTQc2VBbF-fuB7WrfO5Ten4VIP7cdRG1lUeDX&s" width="30" className="img-fluid rounded"/>
-            {" "}<span className="h5 text-light">Nass</span>
+            {" "}<span className="h5 text-light">NASS</span>
           </div>
           <div className=" overflow-auto my-3" style={styles.chat}>
             {chats.map((item,index)=>(
@@ -190,7 +202,7 @@ function ChatBox({item,index}){
 
 const styles = {
   chat: {
-    height: "65vh",
+    height: "60vh",
     fontSize: 13,
   },
 };
