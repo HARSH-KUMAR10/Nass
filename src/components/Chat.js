@@ -1,11 +1,19 @@
 import React from "react";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 function Chat() {
+  const [record,setRecord] = React.useState(false);
   const [loading,setLoading] = React.useState(false);
   const [chats,setChats] = React.useState([
     {user:"nass",text:"Hello, I am Nass"},
-  ])
+  ]);
   const [search, setSearch] = React.useState("");
+
+  const { transcript, resetTranscript } = useSpeechRecognition()
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    console.log('not supported')
+    return null
+  }
 
   const randomHello = () => {
     var hello = ["Hello, how can I help you?","Greetings for the day.","Hey there, how may I help you today?"];
@@ -61,9 +69,11 @@ function Chat() {
     })
   }
 
-  const splitAndSearch = async () => {
-    console.log(search);
+  const splitAndSearch = async (search) => {
+    search.replace(".","")
+    search.replace(",","")
     var texts = search.split(" ");
+    console.log(texts);
     var answered = false;
     for (var i=0;i<texts.length;i++) {
       var text = texts[i].toLowerCase();
@@ -155,12 +165,24 @@ We hope net-works for you.
               />
             </div>
             <div className="col-md-2 col-3">
+              <button className="btn" onClick={()=>{
+                setRecord(!record);
+                if(!record){  
+                  SpeechRecognition.startListening();
+                }else{
+                  SpeechRecognition.stopListening();
+                  console.log(transcript);
+                  setSearch(transcript);
+                  splitAndSearch(transcript);
+                }
+              }}>
               <i
-                className="fa fa-microphone px-md-3 pt-2 px-3"
+                className={"px-md-3 pt-2 px-3 "+(record?"fa fa-pause":"fa fa-microphone")}
                 style={{ fontSize: 25 }}
               ></i>
+              </button>
               {/* <i className="fa fa-send-o " style={{ fontSize: 25 }}></i> */}
-              <button className="btn" onClick={()=>splitAndSearch()}><i className="fa fa-play pb-2 px-1" style={{ fontSize: 25 }}></i></button>
+              <button className="btn" onClick={()=>splitAndSearch(search)}><i className="fa fa-play pb-2 px-1" style={{ fontSize: 25 }}></i></button>
             </div>
           </div>
         </div>
