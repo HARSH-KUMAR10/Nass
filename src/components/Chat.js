@@ -14,6 +14,7 @@ function Chat() {
   const { transcript, resetTranscript } = useSpeechRecognition();
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     console.log("not supported");
+    alert("Speech not supported")
     return null;
   }
 
@@ -36,13 +37,10 @@ function Chat() {
   };
 
   const getAnswerGoogle = (search) => {
-    console.log('Google:',search)
     fetch(`https://nass-server.herokuapp.com/google?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
-        console.log(response);
         var temp = await chats.filter((item) => item.text !== "loading...");
-        console.log(temp);
         if (response.statusCode === 200) {
           setChats([
             ...chats,
@@ -56,7 +54,7 @@ function Chat() {
             { user: "user", text: search },
             {
               user: "nass",
-              text: "Unable to follow up on your request.  - Response from IBM Watson Wikipedia",
+              text: "Unable to follow up on your request.  - Response from Google",
             },
           ]);
           window.location.href = "#bottom";
@@ -68,9 +66,7 @@ function Chat() {
     fetch(`https://nass-server.herokuapp.com/wiki?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
-        console.log(response);
         var temp = await chats.filter((item) => item.text !== "loading...");
-        console.log(temp);
         if (response.statusCode === 200) {
           setChats([
             ...chats,
@@ -87,7 +83,7 @@ function Chat() {
             { user: "user", text: search },
             {
               user: "nass",
-              text: "Unable to follow up on your request.  - Response from IBM Watson Wikipedia",
+              text: "Unable to follow up on your request.  - Response from Wikipedia",
             },
           ]);
           window.location.href = "#bottom";
@@ -96,13 +92,10 @@ function Chat() {
   };
 
   const getAnswerIBM = (search) => {
-    console.log("front : ", search);
     fetch(`https://nass-server.herokuapp.com/IBM?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
-        console.log(response);
         var temp = await chats.filter((item) => item.text !== "loading...");
-        console.log(temp);
         if (response.statusCode === 200) {
           setChats([
             ...temp,
@@ -135,7 +128,6 @@ function Chat() {
     search.replace(".", "");
     search.replace(",", "");
     var texts = search.split(" ");
-    console.log(texts);
     var answered = false;
     for (var i = 0; i < texts.length; i++) {
       var text = texts[i].toLowerCase();
@@ -163,12 +155,10 @@ function Chat() {
       }
     }
     if (!answered) {
-      console.log("API : ", search);
       await setChats([...chats, { user: "nass", text: "loading ..." }]);
       if (num === 1) await getAnswerIBM(search);
       else if (num === 2) await getAnswerWiki(search);
       else await getAnswerGoogle(search);
-      console.log("API : ", search);
     }
     setSearch("");
   };
@@ -249,7 +239,6 @@ We hope net-works for you.
                     SpeechRecognition.startListening();
                   } else {
                     SpeechRecognition.stopListening();
-                    console.log(transcript);
                     setSearch(transcript);
                     splitAndSearch(transcript, 1);
                   }
