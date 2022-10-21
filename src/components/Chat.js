@@ -36,10 +36,8 @@ function Chat() {
   };
 
   const getAnswerGoogle = (search) => {
-    fetch("http://localhost:8001/google", {
-      method: "POST",
-      body: JSON.stringify({ search }),
-    })
+    console.log('Google:',search)
+    fetch(`https://nass-server.herokuapp.com/google?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
         console.log(response);
@@ -67,10 +65,7 @@ function Chat() {
   };
 
   const getAnswerWiki = (search) => {
-    fetch("http://localhost:8001/wiki", {
-      method: "POST",
-      body: JSON.stringify({ search }),
-    })
+    fetch(`https://nass-server.herokuapp.com/wiki?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
         console.log(response);
@@ -173,6 +168,7 @@ function Chat() {
       if (num === 1) await getAnswerIBM(search);
       else if (num === 2) await getAnswerWiki(search);
       else await getAnswerGoogle(search);
+      console.log("API : ", search);
     }
     setSearch("");
   };
@@ -224,7 +220,7 @@ We hope net-works for you.
           </div>
           <div className=" overflow-auto my-3" style={styles.chat}>
             {chats.map((item, index) => (
-              <ChatBox item={item} index={index} />
+              <ChatBox item={item} key={index} />
             ))}
             {/* <div className="py-5"></div> */}
             <div className="text-center" style={{ fontSize: 10 }} id="bottom">
@@ -238,6 +234,7 @@ We hope net-works for you.
                 type="text"
                 className="form-control p-1 mt-2"
                 value={search}
+                style={{fontSize:13}}
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
@@ -275,7 +272,7 @@ We hope net-works for you.
               </button>
             </div>
           </div>
-          <div>
+          <div className="mx-1">
             <button
               className="btn btn-outline-dark m-1 p-1"
               onClick={() => splitAndSearch(search, 3)}
