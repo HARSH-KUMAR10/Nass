@@ -5,11 +5,11 @@ function Header(){
                 <a href="/" style={{textDecoration:"none", color:"black"}}>NASS - Network Assistant</a>
                 
             </div>
-            <div className="col-md-3 col-2 row justify-content-around align-items-center">
+            {/* <div className="col-md-3 col-2 row justify-content-around align-items-center">
                 <div className="col-3"><i className="fa fa-sign-in" style={{fontSize:20}}></i></div>
                 <div className="col-3"><i className="fa fa-user-plus" style={{fontSize:20}}></i></div>
                 <div className="col-3"><i className="fa fa-address-card-o" style={{fontSize:20}}></i></div>
-            </div>
+            </div> */}
         </div>
     )
 }
