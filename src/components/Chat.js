@@ -5,13 +5,13 @@ import SpeechRecognition, {
 
 function Chat() {
   const [record, setRecord] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const [chats, setChats] = React.useState([
     { user: "nass", text: "Hello, I am Nass" },
   ]);
   const [search, setSearch] = React.useState("");
 
   const { transcript, resetTranscript } = useSpeechRecognition();
+  console.log(resetTranscript);
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     console.log("not supported");
     alert("Speech not supported")
@@ -37,7 +37,8 @@ function Chat() {
   };
 
   const getAnswerGoogle = (search) => {
-    fetch(`https://nass-server.herokuapp.com/google?search=${search}`)
+    // fetch(`https://nass-server.herokuapp.com/google?search=${search}`)
+    fetch(`http://localhost:8001/google?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
         var temp = await chats.filter((item) => item.text !== "loading...");
@@ -63,7 +64,8 @@ function Chat() {
   };
 
   const getAnswerWiki = (search) => {
-    fetch(`https://nass-server.herokuapp.com/wiki?search=${search}`)
+    // fetch(`https://nass-server.herokuapp.com/wiki?search=${search}`)
+    fetch(`http://localhost:8001/wiki?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
         var temp = await chats.filter((item) => item.text !== "loading...");
@@ -92,7 +94,8 @@ function Chat() {
   };
 
   const getAnswerIBM = (search) => {
-    fetch(`https://nass-server.herokuapp.com/IBM?search=${search}`)
+    // fetch(`https://nass-server.herokuapp.com/IBM?search=${search}`)
+    fetch(`http://localhost:8001/IBM?search=${search}`)
       .then((res) => res.json())
       .then(async (response) => {
         var temp = await chats.filter((item) => item.text !== "loading...");
@@ -204,6 +207,7 @@ We hope net-works for you.
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0a2nCTQc2VBbF-fuB7WrfO5Ten4VIP7cdRG1lUeDX&s"
               width="30"
+              alt="chat-bot"
               className="img-fluid rounded"
             />{" "}
             <span className="h5 text-light">NASS</span>
@@ -240,7 +244,7 @@ We hope net-works for you.
                   } else {
                     SpeechRecognition.stopListening();
                     setSearch(transcript);
-                    splitAndSearch(transcript, 1);
+                    // splitAndSearch(transcript, 1);
                   }
                 }}
               >
